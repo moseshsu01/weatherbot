@@ -1,5 +1,6 @@
 import discord
 import responses
+import os
 
 
 async def sendMessage(message, userMessage, isPrivate):
@@ -11,7 +12,7 @@ async def sendMessage(message, userMessage, isPrivate):
 
 
 def runBot():
-    TOKEN = 'MTAxNjA3MTk0MjAyMjg4OTUzNA.Gi6IsU.7CoUZnbEozpUbX5gJScInTfIMkFtjv1jGDmPpI'
+    TOKEN = os.environ['WEATHERIA_TOKEN']
     intents = discord.Intents.default()
     client = discord.Client(intents=intents)
 
