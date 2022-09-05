@@ -1,25 +1,30 @@
 import requests
+import os
 
-apiKey = '0ea6ae9bab874b0f93c192708220409'
+def getWeather(location):
+    apiKey = os.environ['WEATHER_API_KEY']
 
-baseUrl = 'http://api.weatherapi.com/v1'
+    baseUrl = 'http://api.weatherapi.com/v1'
 
-parameters = {
-    'key': apiKey,
-    'q': 'Paris'
-}
+    parameters = {
+        'key': apiKey,
+        'q': location
+    }
 
-requestUrl = baseUrl + '/current.json'
+    requestUrl = baseUrl + '/current.json'
 
-response = requests.get(requestUrl, parameters).json()
-locationObj = response['location']
-currentObj = response['current']
+    try:
+        response = requests.get(requestUrl, parameters).json()
+        locationObj = response['location']
+        currentObj = response['current']
 
-weatherInfo = {
-    'name': locationObj['name'],
-    'temperature': str(currentObj['temp_c']) + '°C',
-    'feelsLike': str(currentObj['feelslike_c']) + '°C',
-    'condition': currentObj['condition']['text']
-}
+        weatherInfo = {
+            'name': locationObj['name'],
+            'temperature': str(currentObj['temp_c']) + '°C',
+            'feelsLike': str(currentObj['feelslike_c']) + '°C',
+            'condition': currentObj['condition']['text']
+        }
 
-print(weatherInfo)
+        return weatherInfo
+    except Exception as e:
+        return None
