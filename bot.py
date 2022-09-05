@@ -11,6 +11,12 @@ async def sendMessage(message, userMessage, isPrivate):
     except Exception as e:
         print(e)
 
+weatherKeyMap = {
+    'temperature': 'Temperature',
+    'feelsLike': 'Feels Like',
+    'condition': 'Condition'
+}
+
 
 def runBot():
     TOKEN = os.environ['WEATHERIA_TOKEN']
@@ -27,9 +33,19 @@ def runBot():
             return
 
         userMessage = str(message.content)
-        response = responses.handleResponse(userMessage)
+        result = responses.handleResponse(userMessage)
 
-        if response:
-            await message.channel.send(response)
+        if isinstance(result, str):
+            response = discord.Embed(title='Error', description=result)
+            await message.channel.send(embed=response)
+        elif result is None:
+            return
+        else:
+            name = result['name']
+            response = discord.Embed(title=f'Weather in {name}')
+            for key in result:
+                if key != 'name':
+                    response.add_field(name=weatherKeyMap[key], value=result[key], inline=False)
+            await message.channel.send(embed=response)
 
     client.run(TOKEN)

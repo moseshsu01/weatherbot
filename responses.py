@@ -1,11 +1,13 @@
 import weather
 
 
-def handleResponse(msg):
-    message = msg.lower()
-
+def handleResponse(message):
     if message.startswith('!weather'):
-        location = message.split(' ')[1]
-        res = weather.getWeather(location)
+        index = message.find(' ')
+
+        if index > 0:
+            location = message[index + 1:]
+            res = weather.getWeather(location)
+            return res
 
     return None
