@@ -1,6 +1,7 @@
 import requests
 import os
 
+
 def getWeather(location):
     apiKey = os.environ['WEATHER_API_KEY']
 
@@ -27,4 +28,7 @@ def getWeather(location):
 
         return weatherInfo
     except Exception as e:
-        return None
+        if e == 'location':
+            return 'Error: invalid location'
+
+    return 'Error: weather not found'
